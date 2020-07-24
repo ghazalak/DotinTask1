@@ -1,4 +1,5 @@
 //package com.tutorialspoint.xml;
+import java.math.BigDecimal;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -6,15 +7,15 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-public class hello {
+public class Dotin_task1 {
     public static void main(String[] args) {
-        long customer_number;
-        float amount;
+        String customer_number;
+        BigDecimal amount;
         int duration;
         String deposit_type;
         System.out.println("DOTIN TASK1!!!");
         try {
-            File inputFile = new File("C:/Users/ghazalak/Desktop/xml.txt");
+            File inputFile = new File("src/xml.txt");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -29,7 +30,7 @@ public class hello {
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    customer_number = Long.valueOf(eElement
+                    customer_number = String.valueOf(eElement
                             .getElementsByTagName("customerNumber")
                             .item(0)
                             .getTextContent());
@@ -37,21 +38,20 @@ public class hello {
                             .getElementsByTagName("depositType")
                             .item(0)
                             .getTextContent());
-                    amount = Float.valueOf(eElement
+                    amount = BigDecimal.valueOf(Long.parseLong(eElement
                             .getElementsByTagName("depositBalance")
                             .item(0)
-                            .getTextContent());
+                            .getTextContent()));
                     duration = Integer.valueOf(eElement
                             .getElementsByTagName("durationInDays")
                             .item(0)
                             .getTextContent());
-                    //System.out.println(customer_number + " " + amount + " " + duration);
-                    Deposit dp = new Deposit();
-                    dp.amount = amount;
-                    dp.duration = duration;
-                    dp.customer_number = customer_number;
-                    dp.deposit_type = deposit_type;
-                    dp.calculate();
+                    System.out.println(customer_number + " " + amount + " " + duration);
+                    DepositType depositType = (DepositType) Class.forName(deposit_type).newInstance();
+                    depositType.setRate();
+                    Deposit deposit = new Deposit(customer_number, amount, duration, depositType);
+                    deposit.calculate_deposit_interest();
+                    System.out.println(deposit.calculate_deposit_interest());
                 }
             }
         } catch (Exception e) {
