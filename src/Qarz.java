@@ -6,4 +6,5 @@ public class Qarz extends DepositType {
     public Qarz() {
         setRate();
     }
+
 }
