@@ -1,7 +1,7 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Deposit {
+public class Deposit implements Comparable<Deposit> {
     private String customerNumber;
     private BigDecimal amount;
     private int duration;
@@ -47,12 +47,14 @@ public class Deposit {
         this.depositType = depositType;
     }
 
-    BigDecimal calculate_deposit_interest() {
+    BigDecimal calculateDepositInterest() {
         BigDecimal rate = new BigDecimal(depositType.getRate());
         BigDecimal duration = new BigDecimal(getDuration());
-        BigDecimal interest = amount.multiply(duration).multiply(rate).divide(new BigDecimal(36500), RoundingMode.HALF_UP);
-        System.out.println(interest);
-        return interest;
+        return amount.multiply(duration).multiply(rate).divide(new BigDecimal(36500), RoundingMode.HALF_UP);
     }
 
+    @Override
+    public int compareTo(Deposit o) {
+        return this.calculateDepositInterest().compareTo(o.calculateDepositInterest());
+    }
 }
