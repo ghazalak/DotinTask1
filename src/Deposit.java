@@ -7,6 +7,16 @@ public class Deposit implements Comparable<Deposit> {
     private int duration;
     private DepositType depositType;
 
+    public BigDecimal getDepositInterest() {
+        return depositInterest;
+    }
+
+    public void setDepositInterest(BigDecimal depositInterest) {
+        this.depositInterest = depositInterest;
+    }
+
+    private BigDecimal depositInterest;
+
 
     public String getCustomerNumber() {
         return customerNumber;
@@ -24,9 +34,7 @@ public class Deposit implements Comparable<Deposit> {
         this.amount = amount;
     }
 
-    public int getDuration() {
-        return duration;
-    }
+    public int getDuration() { return duration; }
 
     public void setDuration(int duration) {
         this.duration = duration;
@@ -47,14 +55,14 @@ public class Deposit implements Comparable<Deposit> {
         this.depositType = depositType;
     }
 
-    BigDecimal calculateDepositInterest() {
+    public void calculateDepositInterest() {
         BigDecimal rate = new BigDecimal(depositType.getRate());
         BigDecimal duration = new BigDecimal(getDuration());
-        return amount.multiply(duration).multiply(rate).divide(new BigDecimal(36500), RoundingMode.HALF_UP);
+        setDepositInterest(amount.multiply(duration).multiply(rate).divide(new BigDecimal(36500), RoundingMode.HALF_UP));
     }
 
     @Override
     public int compareTo(Deposit o) {
-        return this.calculateDepositInterest().compareTo(o.calculateDepositInterest());
+        return this.depositInterest.compareTo(o.depositInterest);
     }
 }
